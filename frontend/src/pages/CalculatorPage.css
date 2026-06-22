@@ -1,0 +1,159 @@
+.calc-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.calc-page h1 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.price-input-section {
+  margin-bottom: 2rem;
+  padding: 20px;
+  background: #f5f7fa;
+  border-radius: 12px;
+}
+
+.price-input-section label {
+  font-size: 0.85rem;
+  color: #888;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.price-slider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.price-slider input[type="range"] {
+  flex: 1;
+  accent-color: #4a7ab5;
+}
+
+.price-display {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1a2742;
+  min-width: 160px;
+  text-align: right;
+}
+
+.calc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.calc-card {
+  padding: 24px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+}
+
+.calc-card h2 {
+  font-size: 1.1rem;
+  margin: 0 0 4px;
+}
+
+.calc-desc {
+  color: #888;
+  font-size: 0.85rem;
+  margin: 0 0 16px;
+}
+
+.food-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.food-btn {
+  padding: 10px 8px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s;
+}
+
+.food-btn:hover {
+  border-color: #4a7ab5;
+}
+
+.food-btn.active {
+  background: #e8f0fa;
+  border-color: #4a7ab5;
+}
+
+.food-name {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.food-price {
+  display: block;
+  font-size: 0.7rem;
+  color: #888;
+}
+
+.saving-input {
+  margin-bottom: 20px;
+}
+
+.saving-input label {
+  font-size: 0.85rem;
+  color: #888;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.saving-slider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.saving-slider input[type="range"] {
+  flex: 1;
+  accent-color: #4a7ab5;
+}
+
+.saving-slider span {
+  font-weight: 600;
+  min-width: 80px;
+  text-align: right;
+}
+
+.calc-result {
+  text-align: center;
+  padding: 20px;
+  background: #f5f7fa;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.result-label {
+  font-size: 0.85rem;
+  color: #666;
+}
+
+.result-number {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1a2742;
+  margin: 8px 0;
+}
+
+.calc-sub {
+  text-align: center;
+  font-size: 0.8rem;
+  color: #aaa;
+}

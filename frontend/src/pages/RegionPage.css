@@ -1,0 +1,69 @@
+.region-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.region-page h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.sido-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 1.5rem;
+}
+
+.sido-tabs button {
+  padding: 8px 14px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background: #fff;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.sido-tabs button:hover {
+  border-color: #4a7ab5;
+  color: #4a7ab5;
+}
+
+.sido-tabs button.active {
+  background: #4a7ab5;
+  color: #fff;
+  border-color: #4a7ab5;
+}
+
+.sigungu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 10px;
+}
+
+.sigungu-card {
+  padding: 16px;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.sigungu-card:hover {
+  border-color: #4a7ab5;
+  box-shadow: 0 2px 8px rgba(74, 122, 181, 0.1);
+}
+
+.sg-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 4px;
+}
+
+.sg-code {
+  color: #aaa;
+  font-size: 0.75rem;
+}
