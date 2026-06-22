@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchApartment, fetchTrades, Apartment, Trade } from '../api/client';
+import PriceChart from '../components/PriceChart';
 import './ApartmentPage.css';
 
 const formatPrice = (price: number) => {
@@ -66,6 +67,8 @@ const ApartmentPage: React.FC = () => {
           이 아파트로 시세 계산기 해보기 →
         </button>
       )}
+
+      <PriceChart trades={trades} />
 
       <h2 className="section-title">거래 이력</h2>
       <table className="trade-table">

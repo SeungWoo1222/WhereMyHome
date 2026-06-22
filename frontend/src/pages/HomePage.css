@@ -56,3 +56,61 @@
 .home-search button:hover {
   background: #3d6098;
 }
+
+.quick-search {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.quick-search button {
+  padding: 6px 16px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #c8d8ec;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quick-search button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: #fff;
+}
+
+.popular-regions {
+  margin-top: 2.5rem;
+}
+
+.popular-label {
+  color: #8aa4c8;
+  font-size: 0.85rem;
+  margin-bottom: 0.8rem;
+  letter-spacing: 1px;
+}
+
+.popular-grid {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.popular-grid button {
+  padding: 10px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.popular-grid button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+}
