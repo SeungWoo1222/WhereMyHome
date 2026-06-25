@@ -6,6 +6,7 @@ import SearchPage from './pages/SearchPage';
 import ApartmentPage from './pages/ApartmentPage';
 import RegionPage from './pages/RegionPage';
 import CalculatorPage from './pages/CalculatorPage';
+import ComparePage from './pages/ComparePage';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/apartment/:id" element={<ApartmentPage />} />
         <Route path="/regions" element={<RegionPage />} />
         <Route path="/calculator" element={<CalculatorPage />} />
+        <Route path="/compare" element={<ComparePage />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,14 +1,11 @@
 .home {
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #1a2742 0%, #2d4a7a 100%);
+  background: linear-gradient(135deg, #1a2742 0%, #2d4a7a 50%, #1a2742 100%);
 }
 
 .home-hero {
   text-align: center;
-  padding: 2rem;
+  padding: 6rem 2rem 3rem;
 }
 
 .home-title {
@@ -81,8 +78,52 @@
   color: #fff;
 }
 
-.popular-regions {
-  margin-top: 2.5rem;
+.home-features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 2rem 3rem;
+}
+
+.feature-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 24px 20px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.feature-card:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.feature-icon {
+  font-size: 2rem;
+  margin-bottom: 12px;
+}
+
+.feature-card h3 {
+  color: #fff;
+  font-size: 1rem;
+  margin: 0 0 8px;
+}
+
+.feature-card p {
+  color: #8aa4c8;
+  font-size: 0.8rem;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.home-popular {
+  text-align: center;
+  padding: 0 2rem 4rem;
 }
 
 .popular-label {
@@ -113,4 +154,12 @@
 .popular-grid button:hover {
   background: rgba(255, 255, 255, 0.15);
   border-color: rgba(255, 255, 255, 0.3);
+}
+
+@media (max-width: 600px) {
+  .home-title { font-size: 2rem; }
+  .home-hero { padding: 4rem 1rem 2rem; }
+  .home-search { flex-direction: column; }
+  .home-search input, .home-search button { width: 100%; }
+  .home-features { grid-template-columns: 1fr; padding: 0 1rem 2rem; }
 }

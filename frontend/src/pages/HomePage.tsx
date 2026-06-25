@@ -46,16 +46,34 @@ const HomePage: React.FC = () => {
             </button>
           ))}
         </div>
+      </div>
 
-        <div className="popular-regions">
-          <p className="popular-label">인기 지역</p>
-          <div className="popular-grid">
-            {POPULAR.map(r => (
-              <button key={r.regionId} onClick={() => navigate(`/search?regionId=${r.regionId}&name=`)}>
-                {r.label}
-              </button>
-            ))}
-          </div>
+      <div className="home-features">
+        <div className="feature-card" onClick={() => navigate('/regions')}>
+          <div className="feature-icon">&#127968;</div>
+          <h3>지역별 조회</h3>
+          <p>시도 / 시군구별 아파트 목록을 한눈에 확인하세요</p>
+        </div>
+        <div className="feature-card" onClick={() => navigate('/calculator')}>
+          <div className="feature-icon">&#128178;</div>
+          <h3>시세 계산기</h3>
+          <p>좋아하는 음식 몇 번 참으면 살 수 있을까?</p>
+        </div>
+        <div className="feature-card" onClick={() => navigate('/search?name=래미안')}>
+          <div className="feature-icon">&#128200;</div>
+          <h3>시세 비교</h3>
+          <p>두 아파트의 가격 추이를 비교해보세요</p>
+        </div>
+      </div>
+
+      <div className="home-popular">
+        <p className="popular-label">인기 지역</p>
+        <div className="popular-grid">
+          {POPULAR.map(r => (
+            <button key={r.regionId} onClick={() => navigate(`/search?regionId=${r.regionId}&name=`)}>
+              {r.label}
+            </button>
+          ))}
         </div>
       </div>
     </div>

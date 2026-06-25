@@ -6,7 +6,7 @@
 
 .calc-page h1 {
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .price-input-section {
@@ -16,30 +16,107 @@
   border-radius: 12px;
 }
 
-.price-input-section label {
+.section-desc {
   font-size: 0.85rem;
   color: #888;
-  display: block;
+  margin: 0 0 12px;
+}
+
+.apt-region-row {
+  display: flex;
+  gap: 8px;
   margin-bottom: 8px;
 }
 
-.price-slider {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+.apt-region-row select {
+  flex: 1;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+  background: #fff;
 }
 
-.price-slider input[type="range"] {
+.apt-search-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.apt-search-row input {
   flex: 1;
-  accent-color: #4a7ab5;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.apt-search-row button {
+  padding: 10px 18px;
+  background: #4a7ab5;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.apt-dropdown {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  margin-bottom: 8px;
+  overflow: hidden;
+}
+
+.apt-option {
+  padding: 10px 14px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.9rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.apt-option:last-child { border-bottom: none; }
+.apt-option:hover { background: #f5f7fa; }
+.apt-opt-name { font-weight: 500; }
+.apt-opt-loc { color: #888; font-size: 0.8rem; }
+
+.selected-apt {
+  font-size: 0.85rem;
+  color: #4a7ab5;
+  margin: 4px 0 12px;
+}
+
+.price-direct {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.price-direct label {
+  font-size: 0.85rem;
+  color: #888;
+  white-space: nowrap;
+}
+
+.price-direct input {
+  width: 120px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  outline: none;
 }
 
 .price-display {
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   font-weight: 700;
   color: #1a2742;
-  min-width: 160px;
-  text-align: right;
 }
 
 .calc-grid {
@@ -56,80 +133,78 @@
 
 .calc-card h2 {
   font-size: 1.1rem;
-  margin: 0 0 4px;
-}
-
-.calc-desc {
-  color: #888;
-  font-size: 0.85rem;
   margin: 0 0 16px;
 }
 
-.food-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.food-presets {
+  display: flex;
+  flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 20px;
+  margin-bottom: 12px;
 }
 
-.food-btn {
-  padding: 10px 8px;
-  border: 1px solid #eee;
-  border-radius: 8px;
+.food-presets button {
+  padding: 6px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   background: #fff;
+  font-size: 0.8rem;
   cursor: pointer;
-  text-align: center;
   transition: all 0.2s;
 }
 
-.food-btn:hover {
-  border-color: #4a7ab5;
+.food-presets button:hover { border-color: #4a7ab5; }
+.food-presets button.active { background: #4a7ab5; color: #fff; border-color: #4a7ab5; }
+
+.food-custom {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
 }
 
-.food-btn.active {
-  background: #e8f0fa;
-  border-color: #4a7ab5;
-}
-
-.food-name {
-  display: block;
+.food-custom input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
   font-size: 0.85rem;
-  font-weight: 600;
-  margin-bottom: 2px;
+  outline: none;
 }
 
-.food-price {
-  display: block;
-  font-size: 0.7rem;
-  color: #888;
-}
-
-.saving-input {
+.saving-control {
   margin-bottom: 20px;
 }
 
-.saving-input label {
+.saving-control label {
+  display: block;
   font-size: 0.85rem;
   color: #888;
-  display: block;
   margin-bottom: 8px;
 }
 
-.saving-slider {
+.saving-buttons {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 6px;
 }
 
-.saving-slider input[type="range"] {
-  flex: 1;
-  accent-color: #4a7ab5;
+.saving-buttons button {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: #fff;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
 }
 
-.saving-slider span {
+.saving-buttons button:hover { background: #f0f0f0; }
+
+.saving-value {
+  font-size: 1.1rem;
   font-weight: 600;
   min-width: 80px;
-  text-align: right;
+  text-align: center;
 }
 
 .calc-result {
@@ -156,4 +231,10 @@
   text-align: center;
   font-size: 0.8rem;
   color: #aaa;
+}
+
+@media (max-width: 600px) {
+  .calc-grid { grid-template-columns: 1fr; }
+  .price-direct { flex-direction: column; align-items: flex-start; }
+  .saving-buttons { flex-wrap: wrap; }
 }

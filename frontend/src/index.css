@@ -11,3 +11,20 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: #1a2742;
 }
+
+@media (max-width: 600px) {
+  .home-title { font-size: 2rem !important; }
+  .home-search { flex-direction: column; }
+  .home-search input, .home-search button { width: 100%; }
+  .stat-grid { grid-template-columns: 1fr !important; }
+  .calc-grid { grid-template-columns: 1fr !important; }
+  .compare-grid { grid-template-columns: 1fr !important; }
+  .vs { text-align: center; }
+  .navbar { padding: 0 1rem; }
+  .nav-links { gap: 12px; font-size: 0.8rem; }
+  .filter-bar { flex-direction: column; }
+  .search-bar { flex-direction: column; }
+  .search-bar button { width: 100%; }
+  .apartment-card { flex-direction: column; align-items: flex-start !important; }
+  .compare-toggle { margin-left: 0 !important; margin-top: 8px; }
+}

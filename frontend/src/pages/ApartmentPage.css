@@ -28,7 +28,7 @@
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 12px;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
 }
 
 .stat-card {
@@ -59,12 +59,50 @@
   font-size: 0.9rem;
   font-weight: 500;
   cursor: pointer;
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   transition: background 0.2s;
 }
 
 .calc-link:hover {
   background: #d4e4f5;
+}
+
+.filter-section {
+  margin-bottom: 1rem;
+}
+
+.period-tabs, .area-tabs {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.period-tabs button, .area-tabs button {
+  padding: 6px 14px;
+  border: 1px solid #ddd;
+  border-radius: 20px;
+  background: #fff;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.period-tabs button:hover, .area-tabs button:hover {
+  border-color: #4a7ab5;
+  color: #4a7ab5;
+}
+
+.period-tabs button.active, .area-tabs button.active {
+  background: #4a7ab5;
+  color: #fff;
+  border-color: #4a7ab5;
+}
+
+.period-hint {
+  font-size: 0.75rem;
+  color: #aaa;
+  margin-left: 8px;
 }
 
 .section-title {
@@ -95,4 +133,26 @@
 .trade-table .price {
   font-weight: 600;
   color: #1a2742;
+}
+
+.load-more {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  margin-top: 1rem;
+  background: #f5f7fa;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #4a7ab5;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.load-more:hover {
+  background: #e8f0fa;
+}
+
+@media (max-width: 600px) {
+  .stat-grid { grid-template-columns: 1fr; }
 }

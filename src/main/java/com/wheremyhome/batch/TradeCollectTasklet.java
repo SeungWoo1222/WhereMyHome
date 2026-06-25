@@ -56,7 +56,6 @@ public class TradeCollectTasklet implements Tasklet {
 
         for (Region region : regions) {
             tradeCollectService.processRegion(region, year, month);
-            try { Thread.sleep(500); } catch (InterruptedException ignored) {}
             done++;
             if (done % 50 == 0) {
                 log.info("  {}-{}: {}/{} regions done", year, String.format("%02d", month), done, regions.size());

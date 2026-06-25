@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchApartment, fetchTrades, Apartment, Trade } from '../api/client';
 import PriceChart from '../components/PriceChart';
@@ -13,11 +13,17 @@ const formatPrice = (price: number) => {
   return `${price.toLocaleString()}만`;
 };
 
+type Period = '6m' | '1y' | '3y' | '5y' | 'all';
+const periodLabel: Record<Period, string> = { '6m': '6개월', '1y': '1년', '3y': '3년', '5y': '5년', 'all': '전체' };
+
 const ApartmentPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [apartment, setApartment] = useState<Apartment | null>(null);
   const [trades, setTrades] = useState<Trade[]>([]);
+  const [period, setPeriod] = useState<Period>('1y');
+  const [selectedArea, setSelectedArea] = useState<string>('all');
+  const [showCount, setShowCount] = useState(20);
 
   useEffect(() => {
     const aptId = Number(id);
@@ -25,7 +31,44 @@ const ApartmentPage: React.FC = () => {
     fetchTrades(aptId).then(setTrades).catch(() => {});
   }, [id]);
 
-  const latestTrade = trades[0];
+  const latestDate = trades.length > 0 ? trades[0].tradeDate : null;
+
+  const getPeriodMinDate = (p: Period): string | null => {
+    if (p === 'all' || !latestDate) return null;
+    const d = new Date(latestDate);
+    if (p === '6m') d.setMonth(d.getMonth() - 6);
+    else {
+      const years = p === '1y' ? 1 : p === '3y' ? 3 : 5;
+      d.setFullYear(d.getFullYear() - years);
+    }
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  };
+
+  const areas = useMemo(() => {
+    const set = new Map<string, number>();
+    trades.forEach(t => {
+      const key = String(t.area);
+      set.set(key, (set.get(key) || 0) + 1);
+    });
+    return Array.from(set.entries())
+      .sort((a, b) => b[1] - a[1])
+      .map(([area]) => area);
+  }, [trades]);
+
+  const filteredTrades = useMemo(() => {
+    const minDate = getPeriodMinDate(period);
+    return trades.filter(t => {
+      if (minDate && t.tradeDate < minDate) return false;
+      if (selectedArea !== 'all' && String(t.area) !== selectedArea) return false;
+      return true;
+    });
+  }, [trades, period, selectedArea, latestDate]);
+
+  const latestTrade = filteredTrades[0];
+  const visibleTrades = filteredTrades.slice(0, showCount);
 
   return (
     <div className="apt-page">
@@ -53,35 +96,48 @@ const ApartmentPage: React.FC = () => {
             <div className="stat-value">{latestTrade.tradeDate}</div>
           </div>
           <div className="stat-card">
-            <div className="stat-label">총 거래 건수</div>
-            <div className="stat-value">{trades.length.toLocaleString()}건</div>
+            <div className="stat-label">조회 거래 건수</div>
+            <div className="stat-value">{filteredTrades.length.toLocaleString()}건</div>
           </div>
         </div>
       )}
 
       {latestTrade && (
-        <button
-          className="calc-link"
-          onClick={() => navigate(`/calculator?price=${latestTrade.price}`)}
-        >
+        <button className="calc-link" onClick={() => navigate(`/calculator?price=${latestTrade.price}`)}>
           이 아파트로 시세 계산기 해보기 →
         </button>
       )}
 
-      <PriceChart trades={trades} />
+      <div className="filter-section">
+        <div className="period-tabs">
+          {(['6m', '1y', '3y', '5y', 'all'] as Period[]).map(p => (
+            <button key={p} className={period === p ? 'active' : ''} onClick={() => setPeriod(p)}>
+              {periodLabel[p]}
+            </button>
+          ))}
+          {latestDate && <span className="period-hint">최신: {latestDate}</span>}
+        </div>
+        {areas.length > 1 && (
+          <div className="area-tabs">
+            <button className={selectedArea === 'all' ? 'active' : ''} onClick={() => setSelectedArea('all')}>전체 면적</button>
+            {areas.slice(0, 5).map(area => (
+              <button key={area} className={selectedArea === area ? 'active' : ''} onClick={() => setSelectedArea(area)}>
+                {area}㎡
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
 
-      <h2 className="section-title">거래 이력</h2>
+      <PriceChart trades={filteredTrades} />
+
+      <h2 className="section-title">거래 이력 ({filteredTrades.length}건)</h2>
       <table className="trade-table">
         <thead>
-          <tr>
-            <th>거래일</th>
-            <th>면적</th>
-            <th>층</th>
-            <th>거래금액</th>
-          </tr>
+          <tr><th>거래일</th><th>면적</th><th>층</th><th>거래금액</th></tr>
         </thead>
         <tbody>
-          {trades.map((t, i) => (
+          {visibleTrades.map((t, i) => (
             <tr key={i}>
               <td>{t.tradeDate}</td>
               <td>{t.area}㎡</td>
@@ -91,6 +147,12 @@ const ApartmentPage: React.FC = () => {
           ))}
         </tbody>
       </table>
+
+      {showCount < filteredTrades.length && (
+        <button className="load-more" onClick={() => setShowCount(c => c + 20)}>
+          더보기 ({filteredTrades.length - showCount}건 남음)
+        </button>
+      )}
     </div>
   );
 };
