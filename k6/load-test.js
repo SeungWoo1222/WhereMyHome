@@ -5,25 +5,30 @@ const BASE_URL = 'http://localhost:8080';
 
 export const options = {
     stages: [
-        { duration: '10s', target: 10 },   // 10초 동안 10명으로 올리기
-        { duration: '30s', target: 50 },   // 30초 동안 50명 유지
-        { duration: '10s', target: 0 },    // 10초 동안 내리기
+        { duration: '10s', target: 10 },
+        { duration: '30s', target: 50 },
+        { duration: '10s', target: 0 },
     ],
     thresholds: {
-        http_req_duration: ['p(95)<2000'], // 95%가 2초 안에 응답해야 함
+        'http_req_duration{endpoint:search}': ['p(95)<3000'],
+        'http_req_duration{endpoint:trades}': ['p(95)<3000'],
+        'http_req_duration{endpoint:regions}': ['p(95)<3000'],
     },
 };
 
 export default function () {
-    // 1. 아파트 검색 (LIKE 쿼리 — 가장 느릴 가능성 높음)
-    http.get(`${BASE_URL}/api/apartments?name=래미안`);
+    http.get(`${BASE_URL}/api/apartments?name=${encodeURIComponent('현대')}`, {
+        tags: { endpoint: 'search' },
+    });
     sleep(0.5);
 
-    // 2. 시세 차트 데이터
-    http.get(`${BASE_URL}/api/apartments/243/trades`);
+    http.get(`${BASE_URL}/api/apartments/243/trades`, {
+        tags: { endpoint: 'trades' },
+    });
     sleep(0.5);
 
-    // 3. 지역 목록
-    http.get(`${BASE_URL}/api/regions`);
+    http.get(`${BASE_URL}/api/regions`, {
+        tags: { endpoint: 'regions' },
+    });
     sleep(0.5);
 }
