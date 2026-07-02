@@ -37,28 +37,28 @@ public class TradeCollectJobConfig {
 
     private final JobRepository jobRepository;
     private final PlatformTransactionManager transactionManager;
-    private final TradeCollectTasklet tradeCollectTasklet;
     private final RegionRepository regionRepository;
     private final ApartmentComplexRepository complexRepository;
     private final PipelineLogRepository pipelineLogRepository;
     private final MolitApiClient molitApiClient;
     private final JdbcTemplate jdbcTemplate;
 
-    // === 기존 Tasklet 방식 (유지) ===
-
-    @Bean
-    public Job tradeCollectJob() {
-        return new JobBuilder("tradeCollectJob", jobRepository)
-                .start(tradeCollectStep())
-                .build();
-    }
-
-    @Bean
-    public Step tradeCollectStep() {
-        return new StepBuilder("tradeCollectStep", jobRepository)
-                .tasklet(tradeCollectTasklet, transactionManager)
-                .build();
-    }
+    // === 기존 Tasklet 방식 (Chunk로 대체, 사용 안 함 — 추후 삭제 예정) ===
+    // 관련 클래스: TradeCollectTasklet, TradeCollectService
+    //
+    // @Bean
+    // public Job tradeCollectJob() {
+    //     return new JobBuilder("tradeCollectJob", jobRepository)
+    //             .start(tradeCollectStep())
+    //             .build();
+    // }
+    //
+    // @Bean
+    // public Step tradeCollectStep() {
+    //     return new StepBuilder("tradeCollectStep", jobRepository)
+    //             .tasklet(tradeCollectTasklet, transactionManager)
+    //             .build();
+    // }
 
     // === 새 Chunk 방식 ===
 

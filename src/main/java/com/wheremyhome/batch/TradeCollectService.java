@@ -40,8 +40,9 @@ import java.util.Map;
  *   4. 거래 기록 DB 저장 (JdbcTemplate 배치 INSERT)
  *   5. pipeline_logs에 성공/실패 기록
  */
+// 사용 안 함 — TradeCollectTasklet 전용이었음. Tasklet과 함께 추후 삭제 예정.
 @Slf4j
-@Service
+// @Service
 @RequiredArgsConstructor
 public class TradeCollectService {
 

@@ -28,8 +28,9 @@ import java.util.Map;
  * → @Transactional 프록시가 작동하려면 다른 클래스에서 호출해야 하기 때문.
  *   (같은 클래스 내 호출은 Spring 프록시를 우회해서 트랜잭션이 안 걸림)
  */
+// 사용 안 함 — Chunk 방식(TradeApiItemReader/Processor/Writer)으로 대체됨. 추후 삭제 예정.
 @Slf4j
-@Component
+// @Component
 @RequiredArgsConstructor
 public class TradeCollectTasklet implements Tasklet {
 
