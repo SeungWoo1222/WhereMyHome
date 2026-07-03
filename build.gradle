@@ -37,6 +37,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
 
+    // Caffeine (in-memory cache)
+    implementation 'com.github.ben-manes.caffeine:caffeine'
+
     // WebClient (공공 API 호출)
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
