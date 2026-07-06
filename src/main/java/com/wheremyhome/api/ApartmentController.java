@@ -1,6 +1,7 @@
 package com.wheremyhome.api;
 
 import com.wheremyhome.api.dto.ApartmentResponse;
+import com.wheremyhome.api.dto.MonthlyTradeResponse;
 import com.wheremyhome.api.dto.TradeResponse;
 import com.wheremyhome.repository.ApartmentComplexRepository;
 import com.wheremyhome.repository.TradeRecordQueryRepository;
@@ -41,5 +42,10 @@ public class ApartmentController {
     @GetMapping("/{id}/trades")
     public List<TradeResponse> getTrades(@PathVariable Long id) {
         return tradeRecordQueryRepository.findByComplexId(id);
+    }
+
+    @GetMapping("/{id}/trades/monthly")
+    public List<MonthlyTradeResponse> getMonthlyTrades(@PathVariable Long id) {
+        return tradeRecordQueryRepository.findMonthlyByComplexId(id);
     }
 }

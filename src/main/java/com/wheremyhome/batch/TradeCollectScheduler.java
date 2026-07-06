@@ -9,6 +9,7 @@ import org.springframework.batch.core.Step;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -31,6 +32,7 @@ public class TradeCollectScheduler {
     private final JobLauncher jobLauncher;
     private final JobRepository jobRepository;
     private final TradeCollectJobConfig jobConfig;
+    private final JdbcTemplate jdbcTemplate;
 
     /**
      * cron = "0 0 2 1 * *"
@@ -59,6 +61,9 @@ public class TradeCollectScheduler {
 
             jobLauncher.run(chunkJob, params);
             log.info("Scheduled collection completed: {}-{}", year, String.format("%02d", month));
+
+            jdbcTemplate.execute("REFRESH MATERIALIZED VIEW CONCURRENTLY monthly_trade_stats");
+            log.info("Materialized view refreshed");
         } catch (Exception e) {
             log.error("Scheduled collection failed: {}-{} - {}", year, String.format("%02d", month), e.getMessage(), e);
         }

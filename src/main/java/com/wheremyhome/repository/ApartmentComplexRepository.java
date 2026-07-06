@@ -2,6 +2,7 @@ package com.wheremyhome.repository;
 
 import com.wheremyhome.domain.apartment.ApartmentComplex;
 import com.wheremyhome.domain.region.Region;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import org.springframework.data.domain.Page;
@@ -13,7 +14,9 @@ public interface ApartmentComplexRepository extends JpaRepository<ApartmentCompl
 
     List<ApartmentComplex> findByRegion(Region region);
 
+    @EntityGraph(attributePaths = {"region"})
     Page<ApartmentComplex> findByRegionIdAndComplexNameContaining(Long regionId, String name, Pageable pageable);
 
+    @EntityGraph(attributePaths = {"region"})
     Page<ApartmentComplex> findByComplexNameContaining(String name, Pageable pageable);
 }
