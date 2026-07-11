@@ -6,8 +6,8 @@ import com.wheremyhome.api.dto.TradeResponse;
 import com.wheremyhome.repository.ApartmentComplexRepository;
 import com.wheremyhome.repository.TradeRecordQueryRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,9 +21,9 @@ public class ApartmentController {
     private final TradeRecordQueryRepository tradeRecordQueryRepository;
 
     @GetMapping
-    public Page<ApartmentResponse> search(@RequestParam(required = false) Long regionId,
-                                          @RequestParam(required = false, defaultValue = "") String name,
-                                          Pageable pageable) {
+    public Slice<ApartmentResponse> search(@RequestParam(required = false) Long regionId,
+                                           @RequestParam(required = false, defaultValue = "") String name,
+                                           Pageable pageable) {
         if (regionId != null) {
             return complexRepository.findByRegionIdAndComplexNameContaining(regionId, name, pageable)
                     .map(ApartmentResponse::from);

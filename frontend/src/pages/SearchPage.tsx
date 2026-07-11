@@ -11,7 +11,7 @@ const SearchPage: React.FC = () => {
   const name = searchParams.get('name') || '';
   const regionId = searchParams.get('regionId') ? Number(searchParams.get('regionId')) : undefined;
   const [apartments, setApartments] = useState<Apartment[]>([]);
-  const [total, setTotal] = useState(0);
+  const [hasNext, setHasNext] = useState(false);
   const [page, setPage] = useState(0);
   const [keyword, setKeyword] = useState(name);
   const [sort, setSort] = useState<SortKey>('name');
@@ -22,7 +22,7 @@ const SearchPage: React.FC = () => {
   useEffect(() => {
     searchApartments({ name, regionId, page, size: 100 }).then(data => {
       setApartments(data.content);
-      setTotal(data.totalElements);
+      setHasNext(data.hasNext);
     }).catch(() => {});
   }, [name, regionId, page]);
 
@@ -85,7 +85,7 @@ const SearchPage: React.FC = () => {
       </div>
 
       <p className="search-count">
-        {name ? `"${name}" ` : ''}검색 결과 {filtered.length}건 (전체 {total.toLocaleString()})
+        {name ? `"${name}" ` : ''}검색 결과 {filtered.length}건
       </p>
 
       {compareList.length === 2 && (
@@ -117,11 +117,11 @@ const SearchPage: React.FC = () => {
         ))}
       </div>
 
-      {total > 100 && (
+      {(page > 0 || hasNext) && (
         <div className="pagination">
           <button disabled={page === 0} onClick={() => setPage(p => p - 1)}>이전</button>
-          <span>{page + 1} / {Math.ceil(total / 100)}</span>
-          <button disabled={(page + 1) * 100 >= total} onClick={() => setPage(p => p + 1)}>다음</button>
+          <span>{page + 1}페이지</span>
+          <button disabled={!hasNext} onClick={() => setPage(p => p + 1)}>다음</button>
         </div>
       )}
     </div>
