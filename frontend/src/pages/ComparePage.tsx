@@ -132,7 +132,7 @@ const ComparePage: React.FC = () => {
             <>
               <div className="compare-price">{formatPrice(latestA.price)}</div>
               <div className="compare-detail">{latestA.area}㎡ · {latestA.tradeDate}</div>
-              <div className="compare-count">거래 {tradesA.length}건</div>
+              <div className="compare-count">최근 1년 거래 {tradesA.length}건</div>
             </>
           )}
         </div>
@@ -144,7 +144,7 @@ const ComparePage: React.FC = () => {
             <>
               <div className="compare-price">{formatPrice(latestB.price)}</div>
               <div className="compare-detail">{latestB.area}㎡ · {latestB.tradeDate}</div>
-              <div className="compare-count">거래 {tradesB.length}건</div>
+              <div className="compare-count">최근 1년 거래 {tradesB.length}건</div>
             </>
           )}
         </div>

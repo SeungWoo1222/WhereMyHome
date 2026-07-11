@@ -13,8 +13,8 @@ const formatPrice = (price: number) => {
   return `${price.toLocaleString()}만`;
 };
 
-type Period = '6m' | '1y' | '3y' | '5y' | 'all';
-const periodLabel: Record<Period, string> = { '6m': '6개월', '1y': '1년', '3y': '3년', '5y': '5년', 'all': '전체' };
+type Period = '6m' | '1y' | '3y' | 'all';
+const periodLabel: Record<Period, string> = { '6m': '6개월', '1y': '1년', '3y': '3년', 'all': '전체' };
 
 const ApartmentPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -40,7 +40,7 @@ const ApartmentPage: React.FC = () => {
     const d = new Date(latestDate);
     if (p === '6m') d.setMonth(d.getMonth() - 6);
     else {
-      const years = p === '1y' ? 1 : p === '3y' ? 3 : 5;
+      const years = p === '1y' ? 1 : 3;
       d.setFullYear(d.getFullYear() - years);
     }
     const y = d.getFullYear();
@@ -62,7 +62,7 @@ const ApartmentPage: React.FC = () => {
 
   const filteredMonthlyTrades = useMemo(() => {
     if (period === 'all') return monthlyTrades;
-    const months = period === '6m' ? 6 : period === '1y' ? 12 : period === '3y' ? 36 : 60;
+    const months = period === '6m' ? 6 : period === '1y' ? 12 : 36;
     const from = new Date();
     from.setMonth(from.getMonth() - months);
     const fromStr = `${from.getFullYear()}-${String(from.getMonth() + 1).padStart(2, '0')}`;
@@ -121,7 +121,7 @@ const ApartmentPage: React.FC = () => {
 
       <div className="filter-section">
         <div className="period-tabs">
-          {(['6m', '1y', '3y', '5y', 'all'] as Period[]).map(p => (
+          {(['6m', '1y', '3y', 'all'] as Period[]).map(p => (
             <button key={p} className={period === p ? 'active' : ''} onClick={() => setPeriod(p)}>
               {periodLabel[p]}
             </button>

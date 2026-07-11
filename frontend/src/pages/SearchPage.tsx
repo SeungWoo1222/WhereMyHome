@@ -28,10 +28,9 @@ const SearchPage: React.FC = () => {
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    if (keyword.trim()) {
-      setPage(0);
-      navigate(`/search?name=${encodeURIComponent(keyword.trim())}`);
-    }
+    if (keyword.trim().length < 3) return;
+    setPage(0);
+    navigate(`/search?name=${encodeURIComponent(keyword.trim())}`);
   };
 
   const toggleCompare = (apt: Apartment) => {
@@ -62,7 +61,7 @@ const SearchPage: React.FC = () => {
           type="text"
           value={keyword}
           onChange={e => setKeyword(e.target.value)}
-          placeholder="아파트명 검색"
+          placeholder="아파트명 검색 (3글자 이상)"
         />
         <button type="submit">검색</button>
       </form>
