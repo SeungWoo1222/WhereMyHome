@@ -18,6 +18,10 @@ public class RegionController {
 
     private final RegionService regionService;
 
+    // GET /api/regions
+    // GET /api/regions?sido=경기도
+    // 전국 시군구 목록, Caffeine 캐시 적용 → 첫 요청만 DB 조회
+    // 반환: { "경기도": [...], "서울특별시": [...] } 시도별로 그룹핑된 Map
     @GetMapping
     public Map<String, List<RegionResponse>> getAll(@RequestParam(required = false) String sido) {
         return regionService.getAll(sido);

@@ -1,14 +1,8 @@
 package com.wheremyhome.batch;
 
+import com.wheremyhome.service.BatchService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.Step;
-import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -29,9 +23,7 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class TradeCollectScheduler {
 
-    private final JobLauncher jobLauncher;
-    private final JobRepository jobRepository;
-    private final TradeCollectJobConfig jobConfig;
+    private final BatchService batchService;
     private final JdbcTemplate jdbcTemplate;
 
     /**
@@ -48,18 +40,7 @@ public class TradeCollectScheduler {
         log.info("Scheduled collection started: {}-{}", year, String.format("%02d", month));
 
         try {
-            Step chunkStep = jobConfig.tradeChunkStep(year, month);
-            Job chunkJob = new JobBuilder("scheduledChunkJob-" + year + "-" + month, jobRepository)
-                    .start(chunkStep)
-                    .build();
-
-            JobParameters params = new JobParametersBuilder()
-                    .addLong("year", (long) year)
-                    .addLong("month", (long) month)
-                    .addLong("runAt", System.currentTimeMillis())
-                    .toJobParameters();
-
-            jobLauncher.run(chunkJob, params);
+            batchService.runTradeCollect(year, month, "scheduledChunkJob");
             log.info("Scheduled collection completed: {}-{}", year, String.format("%02d", month));
 
             jdbcTemplate.execute("REFRESH MATERIALIZED VIEW CONCURRENTLY monthly_trade_stats");

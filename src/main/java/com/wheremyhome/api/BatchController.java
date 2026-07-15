@@ -1,14 +1,7 @@
 package com.wheremyhome.api;
 
-import com.wheremyhome.batch.TradeCollectJobConfig;
+import com.wheremyhome.service.BatchService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.Step;
-import org.springframework.batch.core.job.builder.JobBuilder;
-import org.springframework.batch.core.launch.JobLauncher;
-import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,47 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class BatchController {
 
-    private final JobLauncher jobLauncher;
-    // private final Job tradeCollectJob; // Tasklet 전용, JobConfig에서 빈 주석 처리됨
-    private final JobRepository jobRepository;
-    private final TradeCollectJobConfig jobConfig;
-
-    // === 기존 Tasklet 방식 (사용 안 함 — 추후 삭제 예정) ===
-    //
-    // /**
-    //  * [Tasklet] 특정 연월 1개 수집.
-    //  */
-    // @PostMapping("/trade-collect")
-    // public String run(@RequestParam int year, @RequestParam int month) throws Exception {
-    //     JobParameters params = new JobParametersBuilder()
-    //             .addLong("year", (long) year)
-    //             .addLong("month", (long) month)
-    //             .addLong("runAt", System.currentTimeMillis())
-    //             .toJobParameters();
-    //
-    //     jobLauncher.run(tradeCollectJob, params);
-    //     return "Job started: year=" + year + ", month=" + month;
-    // }
-    //
-    // /**
-    //  * [Tasklet] 연도 범위 수집.
-    //  */
-    // @PostMapping("/trade-collect/range")
-    // public String runRange(@RequestParam int startYear,
-    //                        @RequestParam int endYear,
-    //                        @RequestParam(defaultValue = "1") int startMonth,
-    //                        @RequestParam(defaultValue = "12") int endMonth) throws Exception {
-    //     JobParameters params = new JobParametersBuilder()
-    //             .addLong("startYear", (long) startYear)
-    //             .addLong("endYear", (long) endYear)
-    //             .addLong("startMonth", (long) startMonth)
-    //             .addLong("endMonth", (long) endMonth)
-    //             .addLong("runAt", System.currentTimeMillis())
-    //             .toJobParameters();
-    //
-    //     jobLauncher.run(tradeCollectJob, params);
-    //     return "Job started: " + startYear + "-" + startMonth + " ~ " + endYear + "-" + endMonth;
-    // }
+    private final BatchService batchService;
 
     /**
      * [Chunk] 특정 연월 1개를 Chunk 방식으로 수집.
@@ -78,21 +31,14 @@ public class BatchController {
      * - INSERT ON CONFLICT DO NOTHING (중복 자동 무시)
      * - RateLimiter로 API 호출 속도 제한
      */
+
+    // POST /api/batch/trade-collect/chunk?year=2026&month=7
+    // 국토부 API에서 특정 연월 거래 데이터 수집
+    // 500건 단위 트랜잭션, 중복 자동 무시
+    // 스케줄러가 자동 실행하지만 수동으로도 호출 가능
     @PostMapping("/trade-collect/chunk")
     public String runChunk(@RequestParam int year, @RequestParam int month) throws Exception {
-        Step chunkStep = jobConfig.tradeChunkStep(year, month);
-
-        Job chunkJob = new JobBuilder("tradeChunkJob-" + year + "-" + month, jobRepository)
-                .start(chunkStep)
-                .build();
-
-        JobParameters params = new JobParametersBuilder()
-                .addLong("year", (long) year)
-                .addLong("month", (long) month)
-                .addLong("runAt", System.currentTimeMillis())
-                .toJobParameters();
-
-        jobLauncher.run(chunkJob, params);
+        batchService.runTradeCollect(year, month, "tradeChunkJob");
         return "Chunk job started: year=" + year + ", month=" + month;
     }
 }
