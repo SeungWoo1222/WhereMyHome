@@ -1,5 +1,4 @@
 docker-compose.yml
-application.yml
 
 # Gradle
 .gradle/

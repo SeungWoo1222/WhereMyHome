@@ -22,11 +22,6 @@ import java.util.List;
 
 /**
  * Spring Batch Job/Step 설정.
- *
- * 현재 두 가지 방식 공존:
- *   1. tradeCollectJob: 기존 Tasklet 방식 (range 배치용, 유지)
- *   2. tradeChunkJob:   새 Chunk 방식 (단일 월 처리용)
- *
  * Chunk 방식의 구조:
  *   Reader(API 호출 → 1건씩) → Processor(변환/검증) → Writer(배치 INSERT)
  *   500건 단위 트랜잭션, Skip/Retry 자동 처리.
@@ -42,25 +37,6 @@ public class TradeCollectJobConfig {
     private final PipelineLogRepository pipelineLogRepository;
     private final MolitApiClient molitApiClient;
     private final JdbcTemplate jdbcTemplate;
-
-    // === 기존 Tasklet 방식 (Chunk로 대체, 사용 안 함 — 추후 삭제 예정) ===
-    // 관련 클래스: TradeCollectTasklet, TradeCollectService
-    //
-    // @Bean
-    // public Job tradeCollectJob() {
-    //     return new JobBuilder("tradeCollectJob", jobRepository)
-    //             .start(tradeCollectStep())
-    //             .build();
-    // }
-    //
-    // @Bean
-    // public Step tradeCollectStep() {
-    //     return new StepBuilder("tradeCollectStep", jobRepository)
-    //             .tasklet(tradeCollectTasklet, transactionManager)
-    //             .build();
-    // }
-
-    // === 새 Chunk 방식 ===
 
     /**
      * Chunk 기반 Job.
