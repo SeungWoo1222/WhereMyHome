@@ -3,6 +3,7 @@ package com.wheremyhome.service;
 import com.wheremyhome.api.dto.ApartmentResponse;
 import com.wheremyhome.api.dto.MonthlyTradeResponse;
 import com.wheremyhome.api.dto.TradeResponse;
+import com.wheremyhome.global.exception.ApartmentNotFoundException;
 import com.wheremyhome.repository.ApartmentComplexRepository;
 import com.wheremyhome.repository.TradeRecordQueryRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,7 @@ public class ApartmentService {
     public ApartmentResponse getOne(Long id) {
         return complexRepository.findById(id)
                 .map(ApartmentResponse::from)
-                .orElseThrow(() -> new RuntimeException("Apartment not found: " + id));
+                .orElseThrow(() -> new ApartmentNotFoundException(id));
     }
 
     // 최근 1년 거래 목록 (날짜·면적·층·가격)

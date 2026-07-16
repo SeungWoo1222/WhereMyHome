@@ -10,11 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * 배치 Job을 REST API로 실행하는 컨트롤러.
  *
- * 현재 사용 엔드포인트:
+ * 엔드포인트:
  *   /trade-collect/chunk — Chunk 방식, 단일 월
- *
- * 사용 안 함 (Tasklet 방식, 추후 삭제 예정):
- *   /trade-collect, /trade-collect/range
  */
 @RestController
 @RequestMapping("/api/batch")
