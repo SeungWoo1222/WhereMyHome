@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchApartment, fetchTrades, Apartment, Trade } from '../api/client';
+import { fetchApartment, fetchTrades, fetchMonthlyTrades, Apartment, Trade, MonthlyTrade } from '../api/client';
 import PriceChart from '../components/PriceChart';
 import './ApartmentPage.css';
 
@@ -13,14 +13,15 @@ const formatPrice = (price: number) => {
   return `${price.toLocaleString()}만`;
 };
 
-type Period = '6m' | '1y' | '3y' | '5y' | 'all';
-const periodLabel: Record<Period, string> = { '6m': '6개월', '1y': '1년', '3y': '3년', '5y': '5년', 'all': '전체' };
+type Period = '6m' | '1y' | '3y' | 'all';
+const periodLabel: Record<Period, string> = { '6m': '6개월', '1y': '1년', '3y': '3년', 'all': '전체' };
 
 const ApartmentPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [apartment, setApartment] = useState<Apartment | null>(null);
   const [trades, setTrades] = useState<Trade[]>([]);
+  const [monthlyTrades, setMonthlyTrades] = useState<MonthlyTrade[]>([]);
   const [period, setPeriod] = useState<Period>('1y');
   const [selectedArea, setSelectedArea] = useState<string>('all');
   const [showCount, setShowCount] = useState(20);
@@ -29,6 +30,7 @@ const ApartmentPage: React.FC = () => {
     const aptId = Number(id);
     fetchApartment(aptId).then(setApartment).catch(() => {});
     fetchTrades(aptId).then(setTrades).catch(() => {});
+    fetchMonthlyTrades(aptId).then(setMonthlyTrades).catch(() => {});
   }, [id]);
 
   const latestDate = trades.length > 0 ? trades[0].tradeDate : null;
@@ -38,7 +40,7 @@ const ApartmentPage: React.FC = () => {
     const d = new Date(latestDate);
     if (p === '6m') d.setMonth(d.getMonth() - 6);
     else {
-      const years = p === '1y' ? 1 : p === '3y' ? 3 : 5;
+      const years = p === '1y' ? 1 : 3;
       d.setFullYear(d.getFullYear() - years);
     }
     const y = d.getFullYear();
@@ -57,6 +59,15 @@ const ApartmentPage: React.FC = () => {
       .sort((a, b) => b[1] - a[1])
       .map(([area]) => area);
   }, [trades]);
+
+  const filteredMonthlyTrades = useMemo(() => {
+    if (period === 'all') return monthlyTrades;
+    const months = period === '6m' ? 6 : period === '1y' ? 12 : 36;
+    const from = new Date();
+    from.setMonth(from.getMonth() - months);
+    const fromStr = `${from.getFullYear()}-${String(from.getMonth() + 1).padStart(2, '0')}`;
+    return monthlyTrades.filter(t => t.month >= fromStr);
+  }, [monthlyTrades, period]);
 
   const filteredTrades = useMemo(() => {
     const minDate = getPeriodMinDate(period);
@@ -110,7 +121,7 @@ const ApartmentPage: React.FC = () => {
 
       <div className="filter-section">
         <div className="period-tabs">
-          {(['6m', '1y', '3y', '5y', 'all'] as Period[]).map(p => (
+          {(['6m', '1y', '3y', 'all'] as Period[]).map(p => (
             <button key={p} className={period === p ? 'active' : ''} onClick={() => setPeriod(p)}>
               {periodLabel[p]}
             </button>
@@ -129,7 +140,7 @@ const ApartmentPage: React.FC = () => {
         )}
       </div>
 
-      <PriceChart trades={filteredTrades} />
+      <PriceChart monthlyTrades={filteredMonthlyTrades} />
 
       <h2 className="section-title">거래 이력 ({filteredTrades.length}건)</h2>
       <table className="trade-table">

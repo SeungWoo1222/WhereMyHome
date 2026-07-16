@@ -1,49 +1,41 @@
 package com.wheremyhome.api;
 
+import com.wheremyhome.service.BatchService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.batch.core.Job;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
-import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * 배치 Job을 REST API로 실행하는 컨트롤러.
+ *
+ * 엔드포인트:
+ *   /trade-collect/chunk — Chunk 방식, 단일 월
+ */
 @RestController
 @RequestMapping("/api/batch")
 @RequiredArgsConstructor
 public class BatchController {
 
-    private final JobLauncher jobLauncher;
-    private final Job tradeCollectJob;
+    private final BatchService batchService;
 
-    @PostMapping("/trade-collect")
-    public String run(@RequestParam int year, @RequestParam int month) throws Exception {
-        JobParameters params = new JobParametersBuilder()
-                .addLong("year", (long) year)
-                .addLong("month", (long) month)
-                .addLong("runAt", System.currentTimeMillis())
-                .toJobParameters();
+    /**
+     * [Chunk] 특정 연월 1개를 Chunk 방식으로 수집.
+     *
+     * - 500건 단위 트랜잭션 (실패 시 500건만 롤백)
+     * - Skip/Retry 자동 처리
+     * - INSERT ON CONFLICT DO NOTHING (중복 자동 무시)
+     * - RateLimiter로 API 호출 속도 제한
+     */
 
-        jobLauncher.run(tradeCollectJob, params);
-        return "Job started: year=" + year + ", month=" + month;
-    }
-
-    @PostMapping("/trade-collect/range")
-    public String runRange(@RequestParam int startYear,
-                           @RequestParam int endYear,
-                           @RequestParam(defaultValue = "1") int startMonth,
-                           @RequestParam(defaultValue = "12") int endMonth) throws Exception {
-        JobParameters params = new JobParametersBuilder()
-                .addLong("startYear", (long) startYear)
-                .addLong("endYear", (long) endYear)
-                .addLong("startMonth", (long) startMonth)
-                .addLong("endMonth", (long) endMonth)
-                .addLong("runAt", System.currentTimeMillis())
-                .toJobParameters();
-
-        jobLauncher.run(tradeCollectJob, params);
-        return "Job started: " + startYear + "-" + startMonth + " ~ " + endYear + "-" + endMonth;
+    // POST /api/batch/trade-collect/chunk?year=2026&month=7
+    // 국토부 API에서 특정 연월 거래 데이터 수집
+    // 500건 단위 트랜잭션, 중복 자동 무시
+    // 스케줄러가 자동 실행하지만 수동으로도 호출 가능
+    @PostMapping("/trade-collect/chunk")
+    public String runChunk(@RequestParam int year, @RequestParam int month) throws Exception {
+        batchService.runTradeCollect(year, month, "tradeChunkJob");
+        return "Chunk job started: year=" + year + ", month=" + month;
     }
 }

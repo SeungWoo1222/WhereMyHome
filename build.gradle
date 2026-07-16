@@ -37,6 +37,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
 
+    // Caffeine (in-memory cache)
+    implementation 'com.github.ben-manes.caffeine:caffeine'
+
     // WebClient (공공 API 호출)
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
@@ -56,6 +59,9 @@ dependencies {
 
     // XML (국토부 API 응답 파싱)
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
+
+    // Resilience4j (Rate Limiter)
+    implementation 'io.github.resilience4j:resilience4j-ratelimiter:2.2.0'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'

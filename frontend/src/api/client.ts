@@ -27,10 +27,9 @@ export interface Trade {
   price: number;
 }
 
-export interface Page<T> {
+export interface SliceResult<T> {
   content: T[];
-  totalElements: number;
-  totalPages: number;
+  hasNext: boolean;
   number: number;
 }
 
@@ -38,10 +37,21 @@ export const fetchRegions = (sido?: string) =>
   api.get<Record<string, Region[]>>('/regions', { params: { sido } }).then(r => r.data);
 
 export const searchApartments = (params: { regionId?: number; name?: string; page?: number; size?: number }) =>
-  api.get<Page<Apartment>>('/apartments', { params }).then(r => r.data);
+  api.get<SliceResult<Apartment>>('/apartments', { params }).then(r => r.data);
 
 export const fetchApartment = (id: number) =>
   api.get<Apartment>(`/apartments/${id}`).then(r => r.data);
 
 export const fetchTrades = (apartmentId: number) =>
   api.get<Trade[]>(`/apartments/${apartmentId}/trades`).then(r => r.data);
+
+export interface MonthlyTrade {
+  month: string;
+  avgPrice: number;
+  minPrice: number;
+  maxPrice: number;
+  count: number;
+}
+
+export const fetchMonthlyTrades = (apartmentId: number) =>
+  api.get<MonthlyTrade[]>(`/apartments/${apartmentId}/trades/monthly`).then(r => r.data);

@@ -10,7 +10,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { fetchApartment, fetchTrades, Apartment, Trade } from '../api/client';
+import { fetchApartment, fetchTrades, fetchMonthlyTrades, Apartment, Trade, MonthlyTrade } from '../api/client';
 import './ComparePage.css';
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Tooltip, Legend);
@@ -24,8 +24,8 @@ const formatPrice = (price: number) => {
   return `${price.toLocaleString()}만`;
 };
 
-type Period = '1y' | '2y' | '5y' | 'all';
-const periodLabel: Record<Period, string> = { '1y': '1년', '2y': '2년', '5y': '5년', 'all': '전체' };
+type Period = '1y' | '2y' | '3y' | 'all';
+const periodLabel: Record<Period, string> = { '1y': '1년', '2y': '2년', '3y': '3년', 'all': '전체' };
 
 const ComparePage: React.FC = () => {
   const [searchParams] = useSearchParams();
@@ -36,7 +36,9 @@ const ComparePage: React.FC = () => {
   const [aptB, setAptB] = useState<Apartment | null>(null);
   const [tradesA, setTradesA] = useState<Trade[]>([]);
   const [tradesB, setTradesB] = useState<Trade[]>([]);
-  const [period, setPeriod] = useState<Period>('2y');
+  const [monthlyA, setMonthlyA] = useState<MonthlyTrade[]>([]);
+  const [monthlyB, setMonthlyB] = useState<MonthlyTrade[]>([]);
+  const [period, setPeriod] = useState<Period>('3y');
   const [showCountA, setShowCountA] = useState(10);
   const [showCountB, setShowCountB] = useState(10);
 
@@ -45,47 +47,36 @@ const ComparePage: React.FC = () => {
     fetchApartment(idB).then(setAptB).catch(() => {});
     fetchTrades(idA).then(setTradesA).catch(() => {});
     fetchTrades(idB).then(setTradesB).catch(() => {});
+    fetchMonthlyTrades(idA).then(setMonthlyA).catch(() => {});
+    fetchMonthlyTrades(idB).then(setMonthlyB).catch(() => {});
   }, [idA, idB]);
 
-  const latestDate = useMemo(() => {
-    const dates = [...tradesA.map(t => t.tradeDate), ...tradesB.map(t => t.tradeDate)];
-    return dates.length > 0 ? dates.sort().reverse()[0] : null;
-  }, [tradesA, tradesB]);
-
-  const getMinDate = (p: Period): string | null => {
-    if (p === 'all' || !latestDate) return null;
-    const d = new Date(latestDate);
-    const years = p === '1y' ? 1 : p === '2y' ? 2 : 5;
+  const getMinMonth = (p: Period): string | null => {
+    if (p === 'all') return null;
+    const years = p === '1y' ? 1 : p === '2y' ? 2 : 3;
+    const d = new Date();
     d.setFullYear(d.getFullYear() - years);
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${y}-${m}-${day}`;
+    return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
   };
 
-  const minDate = getMinDate(period);
+  const minMonth = getMinMonth(period);
 
-  const aggregate = (trades: Trade[]) => {
-    const sorted = [...trades].reverse();
-    const filtered = minDate ? sorted.filter(t => t.tradeDate >= minDate) : sorted;
-    const map = new Map<string, { sum: number; count: number }>();
-    filtered.forEach(t => {
-      const month = t.tradeDate.slice(0, 7);
-      const entry = map.get(month);
-      if (entry) { entry.sum += t.price; entry.count++; }
-      else map.set(month, { sum: t.price, count: 1 });
-    });
-    const result = new Map<string, number>();
-    map.forEach((v, k) => result.set(k, Math.round(v.sum / v.count)));
-    return result;
-  };
-
-  const monthlyA = useMemo(() => aggregate(tradesA), [tradesA, minDate]);
-  const monthlyB = useMemo(() => aggregate(tradesB), [tradesB, minDate]);
+  const filteredA = useMemo(() =>
+    minMonth ? monthlyA.filter(m => m.month >= minMonth) : monthlyA,
+    [monthlyA, minMonth]
+  );
+  const filteredB = useMemo(() =>
+    minMonth ? monthlyB.filter(m => m.month >= minMonth) : monthlyB,
+    [monthlyB, minMonth]
+  );
 
   const allMonths = useMemo(() =>
-    Array.from(new Set([...Array.from(monthlyA.keys()), ...Array.from(monthlyB.keys())])).sort()
-  , [monthlyA, monthlyB]);
+    Array.from(new Set([...filteredA.map(m => m.month), ...filteredB.map(m => m.month)])).sort(),
+    [filteredA, filteredB]
+  );
+
+  const mapA = useMemo(() => new Map(filteredA.map(m => [m.month, m.avgPrice])), [filteredA]);
+  const mapB = useMemo(() => new Map(filteredB.map(m => [m.month, m.avgPrice])), [filteredB]);
 
   const latestA = tradesA[0];
   const latestB = tradesB[0];
@@ -97,13 +88,13 @@ const ComparePage: React.FC = () => {
     datasets: [
       {
         label: nameA,
-        data: allMonths.map(m => monthlyA.get(m) ?? null),
+        data: allMonths.map(m => mapA.get(m) ?? null),
         borderColor: '#4a7ab5', backgroundColor: 'rgba(74, 122, 181, 0.1)',
         fill: true, tension: 0.4, pointRadius: 4, pointHoverRadius: 7, borderWidth: 2, spanGaps: true,
       },
       {
         label: nameB,
-        data: allMonths.map(m => monthlyB.get(m) ?? null),
+        data: allMonths.map(m => mapB.get(m) ?? null),
         borderColor: '#e85d5d', backgroundColor: 'rgba(232, 93, 93, 0.1)',
         fill: true, tension: 0.4, pointRadius: 4, pointHoverRadius: 7, borderWidth: 2, spanGaps: true,
       },
@@ -141,7 +132,7 @@ const ComparePage: React.FC = () => {
             <>
               <div className="compare-price">{formatPrice(latestA.price)}</div>
               <div className="compare-detail">{latestA.area}㎡ · {latestA.tradeDate}</div>
-              <div className="compare-count">거래 {tradesA.length}건</div>
+              <div className="compare-count">최근 1년 거래 {tradesA.length}건</div>
             </>
           )}
         </div>
@@ -153,7 +144,7 @@ const ComparePage: React.FC = () => {
             <>
               <div className="compare-price">{formatPrice(latestB.price)}</div>
               <div className="compare-detail">{latestB.area}㎡ · {latestB.tradeDate}</div>
-              <div className="compare-count">거래 {tradesB.length}건</div>
+              <div className="compare-count">최근 1년 거래 {tradesB.length}건</div>
             </>
           )}
         </div>
@@ -163,7 +154,7 @@ const ComparePage: React.FC = () => {
         <div className="chart-header">
           <h2>시세 추이 비교</h2>
           <div className="period-tabs">
-            {(['1y', '2y', '5y', 'all'] as Period[]).map(p => (
+            {(['1y', '2y', '3y', 'all'] as Period[]).map(p => (
               <button key={p} className={period === p ? 'active' : ''} onClick={() => setPeriod(p)}>
                 {periodLabel[p]}
               </button>
