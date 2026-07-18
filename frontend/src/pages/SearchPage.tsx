@@ -19,12 +19,24 @@ const SearchPage: React.FC = () => {
   const [yearMax, setYearMax] = useState('');
   const [compareList, setCompareList] = useState<Apartment[]>([]);
 
+  // 검색어/지역 바뀌면 첫 페이지부터 새로 로드 (누적 초기화)
   useEffect(() => {
-    searchApartments({ name, regionId, page, size: 100 }).then(data => {
+    searchApartments({ name, regionId, page: 0, size: 20 }).then(data => {
       setApartments(data.content);
-      setHasNext(data.hasNext);
+      setHasNext(!data.last);
+      setPage(0);
     }).catch(() => {});
-  }, [name, regionId, page]);
+  }, [name, regionId]);
+
+  // 더보기: 다음 페이지를 조회해 기존 결과에 누적 (Slice의 hasNext만 사용 → COUNT 없음)
+  const loadMore = () => {
+    const next = page + 1;
+    searchApartments({ name, regionId, page: next, size: 20 }).then(data => {
+      setApartments(prev => [...prev, ...data.content]);
+      setHasNext(!data.last);
+      setPage(next);
+    }).catch(() => {});
+  };
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -116,11 +128,9 @@ const SearchPage: React.FC = () => {
         ))}
       </div>
 
-      {(page > 0 || hasNext) && (
-        <div className="pagination">
-          <button disabled={page === 0} onClick={() => setPage(p => p - 1)}>이전</button>
-          <span>{page + 1}페이지</span>
-          <button disabled={!hasNext} onClick={() => setPage(p => p + 1)}>다음</button>
+      {hasNext && (
+        <div className="search-more">
+          <button onClick={loadMore}>더보기</button>
         </div>
       )}
     </div>

@@ -175,3 +175,24 @@
   opacity: 0.4;
   cursor: default;
 }
+
+.search-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.search-more button {
+  padding: 6px 18px;
+  border: none;
+  background: transparent;
+  color: #666;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.15s;
+}
+
+.search-more button:hover {
+  color: #222;
+  text-decoration: underline;
+}

@@ -29,7 +29,7 @@ export interface Trade {
 
 export interface SliceResult<T> {
   content: T[];
-  hasNext: boolean;
+  last: boolean;   // Spring Slice 직렬화 시 hasNext 대신 last(마지막 페이지 여부) 제공
   number: number;
 }
 
