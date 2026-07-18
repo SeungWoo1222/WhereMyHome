@@ -61,7 +61,7 @@ const SearchPage: React.FC = () => {
           type="text"
           value={keyword}
           onChange={e => setKeyword(e.target.value)}
-          placeholder="아파트명 검색 (3글자 이상)"
+          placeholder="단지명·지역 검색 (3글자 이상)"
         />
         <button type="submit">검색</button>
       </form>

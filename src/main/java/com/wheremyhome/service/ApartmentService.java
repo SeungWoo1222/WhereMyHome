@@ -20,13 +20,13 @@ public class ApartmentService {
     private final ApartmentComplexRepository complexRepository;
     private final TradeRecordQueryRepository tradeRecordQueryRepository;
 
-    // regionId 있으면 지역+이름 검색, 없으면 이름만 검색. Slice로 반환 → COUNT 쿼리 없음
+    // regionId 있으면 지역+이름 검색, 없으면 단지명 OR 지역명 검색. Slice로 반환 → COUNT 쿼리 없음
     public Slice<ApartmentResponse> search(Long regionId, String name, Pageable pageable) {
         if (regionId != null) {
             return complexRepository.findByRegionIdAndComplexNameContaining(regionId, name, pageable)
                     .map(ApartmentResponse::from);
         }
-        return complexRepository.findByComplexNameContaining(name, pageable)
+        return complexRepository.searchByNameOrRegion(name, pageable)
                 .map(ApartmentResponse::from);
     }
 

@@ -32,7 +32,7 @@ const HomePage: React.FC = () => {
         <form className="home-search" onSubmit={handleSearch}>
           <input
             type="text"
-            placeholder="아파트명을 검색하세요 (예: 래미안, 자이, 힐스테이트)"
+            placeholder="단지명·지역으로 검색하세요 (예: 래미안, 강남구)"
             value={keyword}
             onChange={e => setKeyword(e.target.value)}
           />
@@ -53,11 +53,6 @@ const HomePage: React.FC = () => {
           <div className="feature-icon">&#127968;</div>
           <h3>지역별 조회</h3>
           <p>시도 / 시군구별 아파트 목록을 한눈에 확인하세요</p>
-        </div>
-        <div className="feature-card" onClick={() => navigate('/calculator')}>
-          <div className="feature-icon">&#128178;</div>
-          <h3>시세 계산기</h3>
-          <p>좋아하는 음식 몇 번 참으면 살 수 있을까?</p>
         </div>
         <div className="feature-card" onClick={() => navigate('/search?name=래미안')}>
           <div className="feature-icon">&#128200;</div>
