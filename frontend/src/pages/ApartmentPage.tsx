@@ -113,12 +113,6 @@ const ApartmentPage: React.FC = () => {
         </div>
       )}
 
-      {latestTrade && (
-        <button className="calc-link" onClick={() => navigate(`/calculator?price=${latestTrade.price}`)}>
-          이 아파트로 시세 계산기 해보기 →
-        </button>
-      )}
-
       <div className="filter-section">
         <div className="period-tabs">
           {(['6m', '1y', '3y', 'all'] as Period[]).map(p => (

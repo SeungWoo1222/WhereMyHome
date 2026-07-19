@@ -89,7 +89,7 @@ const ComparePage: React.FC = () => {
       {
         label: nameA,
         data: allMonths.map(m => mapA.get(m) ?? null),
-        borderColor: '#4a7ab5', backgroundColor: 'rgba(74, 122, 181, 0.1)',
+        borderColor: '#0B6E6A', backgroundColor: 'rgba(11, 110, 106, 0.1)',
         fill: true, tension: 0.4, pointRadius: 4, pointHoverRadius: 7, borderWidth: 2, spanGaps: true,
       },
       {

@@ -10,7 +10,7 @@ const Navbar: React.FC = () => {
 
   return (
     <nav className="navbar">
-      <Link to="/" className="nav-logo">WhereMyHome</Link>
+      <Link to="/" className="nav-logo">내 집은 <span>어디에</span></Link>
       <div className="nav-links">
         <Link to="/regions" className={location.pathname === '/regions' ? 'active' : ''}>지역별 조회</Link>
         <Link to="/search?name=" className={location.pathname === '/search' ? 'active' : ''}>아파트 검색</Link>

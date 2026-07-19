@@ -7,7 +7,7 @@
 .back-btn {
   background: none;
   border: none;
-  color: #4a7ab5;
+  color: #0B6E6A;
   font-size: 0.9rem;
   cursor: pointer;
   margin-bottom: 1rem;
@@ -20,7 +20,7 @@
 }
 
 .apt-location {
-  color: #888;
+  color: #6A7180;
   margin-bottom: 1.5rem;
 }
 
@@ -32,14 +32,14 @@
 }
 
 .stat-card {
-  background: #f5f7fa;
+  background: #F5F4EF;
   border-radius: 8px;
   padding: 16px;
 }
 
 .stat-label {
   font-size: 0.8rem;
-  color: #888;
+  color: #6A7180;
   margin-bottom: 4px;
 }
 
@@ -52,8 +52,8 @@
   display: block;
   width: 100%;
   padding: 12px;
-  background: #e8f0fa;
-  color: #4a7ab5;
+  background: #E7F1F0;
+  color: #0B6E6A;
   border: none;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -80,7 +80,7 @@
 
 .period-tabs button, .area-tabs button {
   padding: 6px 14px;
-  border: 1px solid #ddd;
+  border: 1px solid #E3E1D8;
   border-radius: 20px;
   background: #fff;
   font-size: 0.8rem;
@@ -89,14 +89,14 @@
 }
 
 .period-tabs button:hover, .area-tabs button:hover {
-  border-color: #4a7ab5;
-  color: #4a7ab5;
+  border-color: #0B6E6A;
+  color: #0B6E6A;
 }
 
 .period-tabs button.active, .area-tabs button.active {
-  background: #4a7ab5;
+  background: #0B6E6A;
   color: #fff;
-  border-color: #4a7ab5;
+  border-color: #0B6E6A;
 }
 
 .period-hint {
@@ -118,9 +118,9 @@
 .trade-table th {
   text-align: left;
   padding: 10px 12px;
-  border-bottom: 2px solid #eee;
+  border-bottom: 2px solid #E3E1D8;
   font-size: 0.85rem;
-  color: #888;
+  color: #6A7180;
   font-weight: 500;
 }
 
@@ -132,7 +132,7 @@
 
 .trade-table .price {
   font-weight: 600;
-  color: #1a2742;
+  color: #16233B;
 }
 
 .load-more {
@@ -140,17 +140,17 @@
   width: 100%;
   padding: 12px;
   margin-top: 1rem;
-  background: #f5f7fa;
-  border: 1px solid #eee;
+  background: #F5F4EF;
+  border: 1px solid #E3E1D8;
   border-radius: 8px;
   font-size: 0.9rem;
-  color: #4a7ab5;
+  color: #0B6E6A;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .load-more:hover {
-  background: #e8f0fa;
+  background: #E7F1F0;
 }
 
 @media (max-width: 600px) {
