@@ -53,5 +53,5 @@ export interface MonthlyTrade {
   count: number;
 }
 
-export const fetchMonthlyTrades = (apartmentId: number) =>
-  api.get<MonthlyTrade[]>(`/apartments/${apartmentId}/trades/monthly`).then(r => r.data);
+export const fetchMonthlyTrades = (apartmentId: number, all: boolean = false, area?: string) =>
+  api.get<MonthlyTrade[]>(`/apartments/${apartmentId}/trades/monthly`, { params: { all, area } }).then(r => r.data);

@@ -38,9 +38,11 @@ public class ApartmentController {
         return apartmentService.getTrades(id);
     }
 
-    // GET /api/apartments/id/trades/monthly
+    // GET /api/apartments/id/trades/monthly?all=true&area=84.95
     @GetMapping("/{id}/trades/monthly")
-    public List<MonthlyTradeResponse> getMonthlyTrades(@PathVariable Long id) {
-        return apartmentService.getMonthlyTrades(id);
+    public List<MonthlyTradeResponse> getMonthlyTrades(@PathVariable Long id,
+                                                        @RequestParam(required = false, defaultValue = "false") boolean all,
+                                                        @RequestParam(required = false) java.math.BigDecimal area) {
+        return apartmentService.getMonthlyTrades(id, all, area);
     }
 }

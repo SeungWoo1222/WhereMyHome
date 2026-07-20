@@ -30,8 +30,15 @@ const ApartmentPage: React.FC = () => {
     const aptId = Number(id);
     fetchApartment(aptId).then(setApartment).catch(() => {});
     fetchTrades(aptId).then(setTrades).catch(() => {});
-    fetchMonthlyTrades(aptId).then(setMonthlyTrades).catch(() => {});
   }, [id]);
+
+  // period가 '전체'일 때만 MV(최근 3년) 대신 원본 전체 집계를 다시 요청
+  // selectedArea가 바뀌면 그 면적만 필터된 월별 집계를 다시 요청
+  const isAllPeriod = period === 'all';
+  const areaParam = selectedArea !== 'all' ? selectedArea : undefined;
+  useEffect(() => {
+    fetchMonthlyTrades(Number(id), isAllPeriod, areaParam).then(setMonthlyTrades).catch(() => {});
+  }, [id, isAllPeriod, areaParam]);
 
   const latestDate = trades.length > 0 ? trades[0].tradeDate : null;
 
@@ -103,7 +110,7 @@ const ApartmentPage: React.FC = () => {
             <div className="stat-value">{latestTrade.area}㎡</div>
           </div>
           <div className="stat-card">
-            <div className="stat-label">거래일</div>
+            <div className="stat-label">최근 거래일</div>
             <div className="stat-value">{latestTrade.tradeDate}</div>
           </div>
           <div className="stat-card">

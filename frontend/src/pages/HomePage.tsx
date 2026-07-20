@@ -42,39 +42,36 @@ const HomePage: React.FC = () => {
       </nav>
 
       <section className="home-hero">
-        <div className="hero-main">
-          <div className="hero-eyebrow">국토부 실거래가 · 매월 갱신</div>
-          <h1 className="home-title">흩어진 실거래가를<br />한 줄로 정리했습니다</h1>
-          <p className="home-subtitle">전국 아파트 1,055만 건의 실거래를 단지·지역으로 바로 찾고, 월별 시세 추이까지 확인하세요.</p>
+        <div className="hero-eyebrow">국토부 실거래가 · 매월 갱신</div>
+        <h1 className="home-title">전국 아파트 실거래가를,<br />검색 한번으로</h1>
+        <p className="home-subtitle">전국 아파트 1,055만 건의 실거래를 단지·지역으로 바로 찾고, 월별 시세 추이까지 확인하세요.</p>
 
-          <form className="home-search" onSubmit={handleSearch}>
-            <input
-              type="text"
-              placeholder="단지명·지역으로 검색 (예: 래미안, 강남구)"
-              value={keyword}
-              onChange={e => setKeyword(e.target.value)}
-            />
-            <button type="submit">검색</button>
-          </form>
+        <form className="home-search" onSubmit={handleSearch}>
+          <input
+            type="text"
+            placeholder="단지명·지역으로 검색 (예: 래미안, 강남구)"
+            value={keyword}
+            onChange={e => setKeyword(e.target.value)}
+          />
+          <button type="submit">검색</button>
+        </form>
 
-          <div className="quick-search">
-            {QUICK_SEARCH.map(name => (
-              <button key={name} onClick={() => navigate(`/search?name=${encodeURIComponent(name)}`)}>
-                {name}
-              </button>
-            ))}
-          </div>
+        <div className="quick-search">
+          {QUICK_SEARCH.map(name => (
+            <button key={name} onClick={() => navigate(`/search?name=${encodeURIComponent(name)}`)}>
+              {name}
+            </button>
+          ))}
         </div>
 
-        <aside className="home-panel">
-          <h3>지금 데이터베이스</h3>
+        <div className="home-stat-strip">
           {STATS.map(s => (
-            <div className="stat" key={s.k}>
-              <span className="stat-k">{s.k}</span>
+            <div className="stat-cell" key={s.k}>
               <span className="stat-v">{s.v}<em>{s.unit}</em></span>
+              <span className="stat-k">{s.k}</span>
             </div>
           ))}
-        </aside>
+        </div>
       </section>
 
       <section className="home-features">
