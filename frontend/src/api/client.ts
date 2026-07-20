@@ -36,7 +36,7 @@ export interface SliceResult<T> {
 export const fetchRegions = (sido?: string) =>
   api.get<Record<string, Region[]>>('/regions', { params: { sido } }).then(r => r.data);
 
-export const searchApartments = (params: { regionId?: number; name?: string; page?: number; size?: number }) =>
+export const searchApartments = (params: { regionId?: number; name?: string; page?: number; size?: number; sort?: string }) =>
   api.get<SliceResult<Apartment>>('/apartments', { params }).then(r => r.data);
 
 export const fetchApartment = (id: number) =>
