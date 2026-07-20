@@ -19,19 +19,22 @@ const SearchPage: React.FC = () => {
   const [yearMax, setYearMax] = useState('');
   const [compareList, setCompareList] = useState<Apartment[]>([]);
 
-  // 검색어/지역 바뀌면 첫 페이지부터 새로 로드 (누적 초기화)
+  // 정렬은 서버(DB)에서 처리 → 페이지 경계가 정렬 순서와 일치해야 더보기가 항상 "뒤에" 붙음
+  const sortParam = sort === 'year-asc' ? 'builtYear,asc' : sort === 'year-desc' ? 'builtYear,desc' : 'complexName,asc';
+
+  // 검색어/지역/정렬이 바뀌면 첫 페이지부터 새로 로드 (누적 초기화)
   useEffect(() => {
-    searchApartments({ name, regionId, page: 0, size: 20 }).then(data => {
+    searchApartments({ name, regionId, page: 0, size: 20, sort: sortParam }).then(data => {
       setApartments(data.content);
       setHasNext(!data.last);
       setPage(0);
     }).catch(() => {});
-  }, [name, regionId]);
+  }, [name, regionId, sortParam]);
 
-  // 더보기: 다음 페이지를 조회해 기존 결과에 누적 (Slice의 hasNext만 사용 → COUNT 없음)
+  // 더보기: 다음 페이지를 조회해 기존 결과 뒤에 누적 (Slice의 hasNext만 사용 → COUNT 없음)
   const loadMore = () => {
     const next = page + 1;
-    searchApartments({ name, regionId, page: next, size: 20 }).then(data => {
+    searchApartments({ name, regionId, page: next, size: 20, sort: sortParam }).then(data => {
       setApartments(prev => [...prev, ...data.content]);
       setHasNext(!data.last);
       setPage(next);
@@ -54,17 +57,12 @@ const SearchPage: React.FC = () => {
     });
   };
 
-  const filtered = apartments
-    .filter(apt => {
-      if (yearMin && apt.builtYear < Number(yearMin)) return false;
-      if (yearMax && apt.builtYear > Number(yearMax)) return false;
-      return true;
-    })
-    .sort((a, b) => {
-      if (sort === 'year-asc') return (a.builtYear || 0) - (b.builtYear || 0);
-      if (sort === 'year-desc') return (b.builtYear || 0) - (a.builtYear || 0);
-      return a.complexName.localeCompare(b.complexName);
-    });
+  // 정렬은 서버(DB)가 이미 적용해서 내려줌 → 여기선 건축년도 필터만 클라이언트에서 적용
+  const filtered = apartments.filter(apt => {
+    if (yearMin && apt.builtYear < Number(yearMin)) return false;
+    if (yearMax && apt.builtYear > Number(yearMax)) return false;
+    return true;
+  });
 
   return (
     <div className="search-page">
