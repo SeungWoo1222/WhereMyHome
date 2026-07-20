@@ -13,19 +13,19 @@
 .search-bar input {
   flex: 1;
   padding: 12px 16px;
-  border: 1px solid #ddd;
+  border: 1px solid #E3E1D8;
   border-radius: 8px;
   font-size: 1rem;
   outline: none;
 }
 
 .search-bar input:focus {
-  border-color: #4a7ab5;
+  border-color: #0B6E6A;
 }
 
 .search-bar button {
   padding: 12px 24px;
-  background: #4a7ab5;
+  background: #0B6E6A;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -48,14 +48,14 @@
 
 .filter-group label {
   font-size: 0.8rem;
-  color: #888;
+  color: #6A7180;
   white-space: nowrap;
 }
 
 .filter-group input[type="number"] {
   width: 70px;
   padding: 6px 8px;
-  border: 1px solid #ddd;
+  border: 1px solid #E3E1D8;
   border-radius: 6px;
   font-size: 0.85rem;
   outline: none;
@@ -63,14 +63,14 @@
 
 .filter-group select {
   padding: 6px 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #E3E1D8;
   border-radius: 6px;
   font-size: 0.85rem;
   outline: none;
 }
 
 .search-count {
-  color: #666;
+  color: #6A7180;
   margin-bottom: 1rem;
   font-size: 0.9rem;
 }
@@ -79,7 +79,7 @@
   display: block;
   width: 100%;
   padding: 12px;
-  background: #1a2742;
+  background: #16233B;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -91,7 +91,7 @@
 }
 
 .compare-btn:hover {
-  background: #2d4a7a;
+  background: #0a5f5b;
 }
 
 .apartment-list {
@@ -104,13 +104,13 @@
   display: flex;
   align-items: center;
   padding: 16px 20px;
-  border: 1px solid #eee;
+  border: 1px solid #E3E1D8;
   border-radius: 8px;
   transition: border-color 0.2s;
 }
 
 .apartment-card:hover {
-  border-color: #4a7ab5;
+  border-color: #0B6E6A;
 }
 
 .apt-card-main {
@@ -127,32 +127,32 @@
 .apt-info {
   display: flex;
   justify-content: space-between;
-  color: #888;
+  color: #6A7180;
   font-size: 0.85rem;
 }
 
 .compare-toggle {
   padding: 6px 14px;
-  border: 1px solid #ddd;
+  border: 1px solid #E3E1D8;
   border-radius: 6px;
   background: #fff;
   font-size: 0.8rem;
   cursor: pointer;
-  color: #888;
+  color: #6A7180;
   transition: all 0.2s;
   margin-left: 12px;
   white-space: nowrap;
 }
 
 .compare-toggle:hover {
-  border-color: #4a7ab5;
-  color: #4a7ab5;
+  border-color: #0B6E6A;
+  color: #0B6E6A;
 }
 
 .compare-toggle.active {
-  background: #4a7ab5;
+  background: #0B6E6A;
   color: #fff;
-  border-color: #4a7ab5;
+  border-color: #0B6E6A;
 }
 
 .pagination {
@@ -165,7 +165,7 @@
 
 .pagination button {
   padding: 8px 16px;
-  border: 1px solid #ddd;
+  border: 1px solid #E3E1D8;
   border-radius: 6px;
   background: #fff;
   cursor: pointer;
@@ -174,4 +174,25 @@
 .pagination button:disabled {
   opacity: 0.4;
   cursor: default;
+}
+
+.search-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.search-more button {
+  padding: 6px 18px;
+  border: none;
+  background: transparent;
+  color: #6A7180;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: color 0.15s;
+}
+
+.search-more button:hover {
+  color: #16233B;
+  text-decoration: underline;
 }

@@ -36,8 +36,8 @@ const PriceChart: React.FC<Props> = ({ monthlyTrades }) => {
       {
         label: '월 평균가',
         data: monthlyTrades.map(t => t.avgPrice),
-        borderColor: '#4a7ab5',
-        backgroundColor: 'rgba(74, 122, 181, 0.15)',
+        borderColor: '#0B6E6A',
+        backgroundColor: 'rgba(11, 110, 106, 0.15)',
         fill: true,
         tension: 0.4,
         pointRadius: 4,

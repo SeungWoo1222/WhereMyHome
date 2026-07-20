@@ -20,13 +20,13 @@ public class ApartmentService {
     private final ApartmentComplexRepository complexRepository;
     private final TradeRecordQueryRepository tradeRecordQueryRepository;
 
-    // regionId 있으면 지역+이름 검색, 없으면 이름만 검색. Slice로 반환 → COUNT 쿼리 없음
+    // regionId 있으면 지역+이름 검색, 없으면 단지명 OR 지역명 검색. Slice로 반환 → COUNT 쿼리 없음
     public Slice<ApartmentResponse> search(Long regionId, String name, Pageable pageable) {
         if (regionId != null) {
             return complexRepository.findByRegionIdAndComplexNameContaining(regionId, name, pageable)
                     .map(ApartmentResponse::from);
         }
-        return complexRepository.findByComplexNameContaining(name, pageable)
+        return complexRepository.searchByNameOrRegion(name, pageable)
                 .map(ApartmentResponse::from);
     }
 
@@ -37,13 +37,16 @@ public class ApartmentService {
                 .orElseThrow(() -> new ApartmentNotFoundException(id));
     }
 
-    // 최근 1년 거래 목록 (날짜·면적·층·가격)
+    // 전체 거래 목록 (날짜·면적·층·가격)
     public List<TradeResponse> getTrades(Long id) {
         return tradeRecordQueryRepository.findByComplexId(id);
     }
 
-    // 최근 3년 월별 집계 (MV에서 조회) → 차트 데이터
-    public List<MonthlyTradeResponse> getMonthlyTrades(Long id) {
-        return tradeRecordQueryRepository.findMonthlyByComplexId(id);
+    // 월별 집계 → 차트 데이터. all=false면 MV(최근 3년, 빠름), all=true면 원본 직접 집계(전체 기간)
+    // area가 null이면 전체 면적 합산, 지정하면 그 면적만 필터
+    public List<MonthlyTradeResponse> getMonthlyTrades(Long id, boolean all, java.math.BigDecimal area) {
+        return all
+                ? tradeRecordQueryRepository.findMonthlyAllByComplexId(id, area)
+                : tradeRecordQueryRepository.findMonthlyByComplexId(id, area);
     }
 }

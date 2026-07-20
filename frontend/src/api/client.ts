@@ -29,7 +29,7 @@ export interface Trade {
 
 export interface SliceResult<T> {
   content: T[];
-  hasNext: boolean;
+  last: boolean;   // Spring Slice 직렬화 시 hasNext 대신 last(마지막 페이지 여부) 제공
   number: number;
 }
 
@@ -53,5 +53,5 @@ export interface MonthlyTrade {
   count: number;
 }
 
-export const fetchMonthlyTrades = (apartmentId: number) =>
-  api.get<MonthlyTrade[]>(`/apartments/${apartmentId}/trades/monthly`).then(r => r.data);
+export const fetchMonthlyTrades = (apartmentId: number, all: boolean = false, area?: string) =>
+  api.get<MonthlyTrade[]>(`/apartments/${apartmentId}/trades/monthly`, { params: { all, area } }).then(r => r.data);

@@ -47,9 +47,14 @@ const ComparePage: React.FC = () => {
     fetchApartment(idB).then(setAptB).catch(() => {});
     fetchTrades(idA).then(setTradesA).catch(() => {});
     fetchTrades(idB).then(setTradesB).catch(() => {});
-    fetchMonthlyTrades(idA).then(setMonthlyA).catch(() => {});
-    fetchMonthlyTrades(idB).then(setMonthlyB).catch(() => {});
   }, [idA, idB]);
+
+  // period가 '전체'일 때만 MV(최근 3년) 대신 원본 전체 집계를 다시 요청
+  const isAllPeriod = period === 'all';
+  useEffect(() => {
+    fetchMonthlyTrades(idA, isAllPeriod).then(setMonthlyA).catch(() => {});
+    fetchMonthlyTrades(idB, isAllPeriod).then(setMonthlyB).catch(() => {});
+  }, [idA, idB, isAllPeriod]);
 
   const getMinMonth = (p: Period): string | null => {
     if (p === 'all') return null;
@@ -89,7 +94,7 @@ const ComparePage: React.FC = () => {
       {
         label: nameA,
         data: allMonths.map(m => mapA.get(m) ?? null),
-        borderColor: '#4a7ab5', backgroundColor: 'rgba(74, 122, 181, 0.1)',
+        borderColor: '#0B6E6A', backgroundColor: 'rgba(11, 110, 106, 0.1)',
         fill: true, tension: 0.4, pointRadius: 4, pointHoverRadius: 7, borderWidth: 2, spanGaps: true,
       },
       {
@@ -132,7 +137,7 @@ const ComparePage: React.FC = () => {
             <>
               <div className="compare-price">{formatPrice(latestA.price)}</div>
               <div className="compare-detail">{latestA.area}㎡ · {latestA.tradeDate}</div>
-              <div className="compare-count">최근 1년 거래 {tradesA.length}건</div>
+              <div className="compare-count">누적 거래 {tradesA.length}건</div>
             </>
           )}
         </div>
@@ -144,7 +149,7 @@ const ComparePage: React.FC = () => {
             <>
               <div className="compare-price">{formatPrice(latestB.price)}</div>
               <div className="compare-detail">{latestB.area}㎡ · {latestB.tradeDate}</div>
-              <div className="compare-count">최근 1년 거래 {tradesB.length}건</div>
+              <div className="compare-count">누적 거래 {tradesB.length}건</div>
             </>
           )}
         </div>

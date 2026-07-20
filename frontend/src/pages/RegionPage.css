@@ -18,7 +18,7 @@
 
 .sido-tabs button {
   padding: 8px 14px;
-  border: 1px solid #ddd;
+  border: 1px solid #E3E1D8;
   border-radius: 20px;
   background: #fff;
   font-size: 0.85rem;
@@ -27,14 +27,14 @@
 }
 
 .sido-tabs button:hover {
-  border-color: #4a7ab5;
-  color: #4a7ab5;
+  border-color: #0B6E6A;
+  color: #0B6E6A;
 }
 
 .sido-tabs button.active {
-  background: #4a7ab5;
+  background: #0B6E6A;
   color: #fff;
-  border-color: #4a7ab5;
+  border-color: #0B6E6A;
 }
 
 .sigungu-grid {
@@ -45,7 +45,7 @@
 
 .sigungu-card {
   padding: 16px;
-  border: 1px solid #eee;
+  border: 1px solid #E3E1D8;
   border-radius: 8px;
   cursor: pointer;
   text-align: center;
@@ -53,7 +53,7 @@
 }
 
 .sigungu-card:hover {
-  border-color: #4a7ab5;
+  border-color: #0B6E6A;
   box-shadow: 0 2px 8px rgba(74, 122, 181, 0.1);
 }
 

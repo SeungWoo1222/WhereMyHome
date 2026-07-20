@@ -4,7 +4,7 @@
   justify-content: space-between;
   padding: 0 2rem;
   height: 56px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid #E3E1D8;
   background: #fff;
   position: sticky;
   top: 0;
@@ -12,10 +12,15 @@
 }
 
 .nav-logo {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #1a2742;
+  font-size: 1.1rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: #16233B;
   text-decoration: none;
+}
+
+.nav-logo span {
+  color: #0B6E6A;
 }
 
 .nav-links {
@@ -25,7 +30,7 @@
 
 .nav-links a {
   text-decoration: none;
-  color: #888;
+  color: #6A7180;
   font-size: 0.9rem;
   padding: 4px 0;
   border-bottom: 2px solid transparent;
@@ -34,6 +39,6 @@
 
 .nav-links a:hover,
 .nav-links a.active {
-  color: #1a2742;
-  border-bottom-color: #4a7ab5;
+  color: #16233B;
+  border-bottom-color: #0B6E6A;
 }
