@@ -73,4 +73,4 @@ DB 최적화 과정을 실측치와 함께 정리했습니다. 자세한 배경�
 ## 트러블슈팅
 
 배치 재시작 문제, 공공 API 연동 이슈 → 구조 개선 방식으로 해결했습니다.
-자세한 내용은 [포트폴리오](#)를 참고 해주시기 바랍니다.
+자세한 내용은 [포트폴리오](https://www.seungwoo.site/project/wheremyhome.html#troubleshooting)를 참고 해주시기 바랍니다.
