@@ -4,7 +4,7 @@
 "기능 구현"에서 멈추지 않고, 부하 테스트로 병목을 실측한 뒤 인덱스·캐시·Materialized View로 개선하고,
 그 전후 수치를 직접 측정해 근거로 남겼습니다.
 
-🔗 **[프로젝트 링크](https://wheremyhome-production.up.railway.app)** ・ 📄 **[기술 블로그(velog)](https://velog.io/@ilginam24/%EC%95%84%ED%8C%8C%ED%8A%B8-%EC%8B%A4%EA%B1%B0%EB%9E%98-%EB%A7%A4%EB%A7%A4%EA%B0%80-%EC%A1%B0%ED%9A%8C-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94)** ・ 📝 [포트폴리오](#)
+🔗 **[프로젝트 링크](https://wheremyhome-production.up.railway.app)** ・ 📄 **[기술 블로그(velog)](https://velog.io/@ilginam24/%EC%95%84%ED%8C%8C%ED%8A%B8-%EC%8B%A4%EA%B1%B0%EB%9E%98-%EB%A7%A4%EB%A7%A4%EA%B0%80-%EC%A1%B0%ED%9A%8C-%EC%84%9C%EB%B9%84%EC%8A%A4-%EC%BF%BC%EB%A6%AC-%EC%B5%9C%EC%A0%81%ED%99%94)** ・ 📝 **[포트폴리오](https://www.seungwoo.site/)**
 
 ---
 
