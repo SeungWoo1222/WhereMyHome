@@ -45,7 +45,7 @@ dependencies {
     // PostgreSQL + Flyway
     runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.flywaydb:flyway-core'
-    implementation 'org.flywaydb:flyway-database-postgresql
+    implementation 'org.flywaydb:flyway-database-postgresql'
 
     // XML (국토부 API 응답 파싱)
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml'
