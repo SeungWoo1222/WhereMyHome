@@ -1,5 +1,6 @@
 package com.wheremyhome.batch.chunk;
 
+import com.wheremyhome.domain.pipeline.PipelineLog;
 import com.wheremyhome.domain.region.Region;
 import com.wheremyhome.infra.molit.MolitApiClient;
 import com.wheremyhome.infra.molit.TradeApiResponse;
@@ -24,6 +25,8 @@ import java.util.List;
  */
 @Slf4j
 public class TradeApiItemReader implements ItemReader<TradeItem> {
+
+    private static final String JOB_NAME = "tradeCollect";
 
     private final MolitApiClient apiClient;
     private final PipelineLogRepository pipelineLogRepository;
@@ -82,11 +85,17 @@ public class TradeApiItemReader implements ItemReader<TradeItem> {
                 continue;
             }
 
+            PipelineLog pipelineLog = PipelineLog.start(JOB_NAME, code, year, month);
+            pipelineLogRepository.save(pipelineLog);
+
             // API 호출
             try {
                 List<TradeApiResponse.Item> items = apiClient.fetchTrades(code, year, month);
                 itemIterator = items.iterator();
                 regionsDone++;
+
+                pipelineLog.success(items.size());
+                pipelineLogRepository.save(pipelineLog);
 
                 if (regionsDone % 50 == 0) {
                     log.info("  {}-{}: {}/{} regions done", year, String.format("%02d", month), regionsDone, regions.size());
@@ -94,6 +103,8 @@ public class TradeApiItemReader implements ItemReader<TradeItem> {
                 return true;
             } catch (Exception e) {
                 log.error("API call failed: {} {}/{} - {}", code, year, month, e.getMessage());
+                pipelineLog.fail(e.getMessage());
+                pipelineLogRepository.save(pipelineLog);
                 continue;
             }
         }
